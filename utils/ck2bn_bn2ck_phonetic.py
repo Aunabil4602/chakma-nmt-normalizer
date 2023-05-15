@@ -484,7 +484,9 @@ def ck2bn_generate_text(bn_cg_list, bn_signs_list):
 
 def ck2bn_pre_process(text):
     text = re.sub('𑄳𑄄', '𑄳𑄆',text) # since it is similar
-    
+    text = re.sub('𑄴𑄳', '𑄴',text)
+    text = re.sub('𑄬+', '𑄬',text)
+
     # fixing special kars
     idx = 0
     result = []
@@ -507,7 +509,22 @@ def ck2bn_pre_process(text):
         
         result.append(text[idx])
         idx+=1
-    
+
+    # fixing single letter jukto borno
+    text = ''.join(result)
+    idx = 0
+    result = []
+    while idx < len(text):
+        
+        if idx > 0 and text[idx-1] in CONS_CK_BN_MAP.keys() and text[idx] == '𑄴' and (idx+1) < len(text)  and (text[idx+1] in SIGNS_CK_BN_MAP.keys()):
+            result.append(text[idx])
+            text = text[:idx + 1] + text[idx - 1] + text[idx + 1:]
+
+            idx += 1
+            continue
+
+        result.append(text[idx])
+        idx+=1
     return ''.join(result)
     
 def ck2bn_post_process(text):
