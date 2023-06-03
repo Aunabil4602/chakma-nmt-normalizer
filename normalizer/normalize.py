@@ -39,7 +39,6 @@ def normalize_chakma_script(text, punctuation_enable = True, ck_enable = True, b
         text = re.sub(r'𑄲', '𑄱', text)
         text = re.sub(r'𑄩', '𑄨', text)
         text = re.sub(r'𑄫', '𑄪', text)
-        text = re.sub(r'𑄯', '𑄮', text)
 
         # single joint kar
         text = re.sub(r'𑄯', '𑄮', text)
@@ -52,7 +51,13 @@ def normalize_chakma_script(text, punctuation_enable = True, ck_enable = True, b
 
     # this is for bn2ck, things will be different for ck2bn
     if bn_enable:
-        text = re.sub(r'শ', 'স' , text)
+        
+        # single character rather than separate dot
+        text = re.sub(r'য়', 'য়' , text) 
+        
+        # simplification
+        text = re.sub(r'য', 'জ', text)
+        text = re.sub(r'শ', 'স', text)
         text = re.sub(r'ষ', 'স', text)
         text = re.sub(r'ড়', 'র', text)
         text = re.sub(r'ঢ়', 'র', text)
