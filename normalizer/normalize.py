@@ -1,5 +1,6 @@
 import unicodedata
 import re
+import string
 from ftfy import fix_text
 from . import const
 
@@ -10,7 +11,7 @@ def fix_quotes(text):
     return text
 
 
-def normalize_chakma_script(text, punctuation_enable = True, ck_enable = True, bn_enable = True):
+def normalize_chakma_script(text, punctuation_enable = True, ck_enable = True, bn_enable = True, punctuation_space = True):
 
     ################################ chakma script normalization
     # brackets and dari
@@ -21,6 +22,7 @@ def normalize_chakma_script(text, punctuation_enable = True, ck_enable = True, b
         text = re.sub('\}', ')', text)
         text = re.sub('[\𑅁\৷\|]', '।', text)
         text = re.sub('[\—\−\–]', '-', text)
+        text = re.sub('𑅃', '?', text)
 
     if ck_enable:
         # ja
@@ -69,6 +71,46 @@ def normalize_chakma_script(text, punctuation_enable = True, ck_enable = True, b
         text = re.sub(r'ূ', 'ু', text)
         text = re.sub(r'ৃ', '্রি', text)
 
+
+    ################################ spaces before every punctutaions
+    # string.punctuation = !"#$%&\'()*+,-./:;<=>?@[\\]^_`{|}~
+    # '।' # include daari
+
+    if punctuation_space:
+        text=re.sub(r'(?<!\s)!', ' '+'!', text)
+        text=re.sub(r'(?<!\s)"', ' '+'"', text)
+        text=re.sub(r'(?<!\s)#', ' '+'#', text)
+        text=re.sub(r'(?<!\s)\$', ' '+'$', text)
+        text=re.sub(r'(?<!\s)%', ' '+'%', text)
+        text=re.sub(r'(?<!\s)&', ' '+'&', text)
+        text=re.sub(r'(?<!\s)\'', ' '+'\'', text)
+        text=re.sub(r'(?<!\s)\(', ' '+'(', text)
+        text=re.sub(r'(?<!\s)\)', ' '+')', text)
+        text=re.sub(r'(?<!\s)\*', ' '+'*', text)
+        text=re.sub(r'(?<!\s)\+', ' '+'+', text)
+        text=re.sub(r'(?<!\s),', ' '+',', text)
+        text=re.sub(r'(?<!\s)-', ' '+'-', text)
+        text=re.sub(r'(?<!\s)\.', ' '+'.', text)
+        text=re.sub(r'(?<!\s)/', ' '+'/', text)
+        text=re.sub(r'(?<!\s):', ' '+':', text)
+        text=re.sub(r'(?<!\s);', ' '+';', text)
+        text=re.sub(r'(?<!\s)<', ' '+'<', text)
+        text=re.sub(r'(?<!\s)=', ' '+'=', text)
+        text=re.sub(r'(?<!\s)>', ' '+'>', text)
+        text=re.sub(r'(?<!\s)\?', ' '+'?', text)
+        text=re.sub(r'(?<!\s)@', ' '+'@', text)
+        text=re.sub(r'(?<!\s)\[', ' '+'[', text)
+        text=re.sub(r'(?<!\s)\\', ' \\\\', text) # still not clear how it gets replaced
+        text=re.sub(r'(?<!\s)\]', ' '+']', text)
+        text=re.sub(r'(?<!\s)\^', ' '+'^', text)
+        text=re.sub(r'(?<!\s)_', ' '+'_', text)
+        text=re.sub(r'(?<!\s)`', ' '+'`', text)
+        text=re.sub(r'(?<!\s){', ' '+'{', text)
+        text=re.sub(r'(?<!\s)\|', ' '+'|', text)
+        text=re.sub(r'(?<!\s)}', ' '+'}', text)
+        text=re.sub(r'(?<!\s)~', ' '+'~', text)
+        text=re.sub(r'(?<!\s)।', ' '+'।', text)
+
     return text
 
 def normalize(
@@ -80,7 +122,8 @@ def normalize(
     apply_unicode_norm_last=True,
     punctuation_enable = True,
     ck_enable = True,
-    bn_enable = True
+    bn_enable = True,
+    punctuation_space = True
 ):
     # fix encoding related issues first
     # and group characters for future
@@ -127,7 +170,8 @@ def normalize(
     text = normalize_chakma_script(text,
                                    punctuation_enable = punctuation_enable,
                                    ck_enable = ck_enable,
-                                   bn_enable = bn_enable)
+                                   bn_enable = bn_enable,
+                                   punctuation_space = punctuation_space)
 
     # finally clean up extra whitespaces
     text = const.WHITESPACE_HANDLER_REGEX.sub(" ", text)
