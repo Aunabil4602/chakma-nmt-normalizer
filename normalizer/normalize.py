@@ -54,8 +54,11 @@ def normalize_chakma_script(text, punctuation_enable = True, ck_enable = True, b
     # this is for bn2ck, things will be different for ck2bn
     if bn_enable:
         
-        # # single character rather than separate dot
-        # text = re.sub(r'য়', 'য়' , text) 
+        # single character rather than separate dot
+        text = re.sub(r'য়', 'য়' , text)  
+        text = re.sub(r'ড়', 'ড়' , text)
+        text = re.sub(r'ব়', 'র' , text)
+        text = re.sub(r'ঢ়', 'ঢ়' , text)
         
         # # simplification
         # text = re.sub(r'য', 'জ', text)
