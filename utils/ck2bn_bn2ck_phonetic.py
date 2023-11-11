@@ -407,6 +407,15 @@ def bn2ck(text):
     return text
 
 
+def bn2ck_list(texts):
+    results = []
+
+    for text in texts:
+        results.append(bn2ck(text))
+
+    return results
+
+
 # In[15]:
 
 
@@ -554,3 +563,11 @@ def ck2bn(text):
     text = ck2bn_post_process(text)
     
     return text
+
+def ck2bn_list(texts):
+    results = []
+
+    for text in texts:
+        results.append(ck2bn(text))
+
+    return results
