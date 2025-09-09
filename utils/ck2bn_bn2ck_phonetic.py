@@ -357,10 +357,10 @@ def bn2ck_resolve_ha(text):
     while idx < len(text):
         if text[idx] == '𑄳' and (idx+1) < len(text) and text[idx+1] == '𑄦':
             temp = []
-            while (len(result)>=0 and (result[-1] in SIGNS_BN_CK_MAP.values() or result[-1] in OTHER_SIGNS_BN_CK_MAP.values())):
+            while (len(result) > 0 and (result[-1] in SIGNS_BN_CK_MAP.values() or result[-1] in OTHER_SIGNS_BN_CK_MAP.values())):
                 temp.append(result.pop())
                 
-            if len(result) >= 0 and result[-1] == '𑄃': # skipping '𑄃' (no needed)
+            if len(result) > 0 and result[-1] == '𑄃': # skipping '𑄃' (no needed)
                 result.pop()
                 result.append('𑄦')
             else:
